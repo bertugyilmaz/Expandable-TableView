@@ -13,15 +13,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var sections = [
-        Section(genre: "sea1", movies: ["se1","se2"], expanded: false),
-        Section(genre: "sea1", movies: ["se1","se2"], expanded: false)
+        Section(genre: "section", movies: ["row","row"], expanded: true),
+        Section(genre: "section", movies: ["row","row"], expanded: false),
+        Section(genre: "section", movies: ["row","row"], expanded: false),
+        Section(genre: "section", movies: ["row","row"], expanded: false)
     ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource, ExpandableHeaderViewDelegate{
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].movies.count
@@ -42,9 +45,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, Expandable
             return 0
         }
     }
-    
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -55,9 +58,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource, Expandable
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "labelCell")!
-        cell.textLabel?.text = sections[indexPath.section].movies[indexPath.row]
+        let rowIndex = indexPath.row
+        
+        cell.textLabel?.text = sections[indexPath.section].movies[rowIndex] + "\(rowIndex)"
         return cell
     }
+}
+
+extension ViewController: ExpandableHeaderViewDelegate {
     
     func toogleSection(header: ExpandableHeaderView, section: Int) {
         sections[section].expanded = !sections[section].expanded
