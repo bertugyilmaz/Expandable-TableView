@@ -13,10 +13,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var sections = [
-        Section(genre: "section", movies: ["row","row"], expanded: true),
-        Section(genre: "section", movies: ["row","row"], expanded: false),
-        Section(genre: "section", movies: ["row","row"], expanded: false),
-        Section(genre: "section", movies: ["row","row"], expanded: false)
+        Section(section: "section", rows: ["row","row"], expanded: true),
+        Section(section: "section", rows: ["row","row"], expanded: false),
+        Section(section: "section", rows: ["row","row"], expanded: false),
+        Section(section: "section", rows: ["row","row"], expanded: false)
     ]
     
     override func viewDidLoad() {
@@ -27,7 +27,7 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].movies.count
+        return sections[section].rows.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -52,7 +52,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = ExpandableHeaderView()
-        header.customInit(title: sections[section].genre, section: section, delegate: self)
+        header.customInit(title: sections[section].section, section: section, delegate: self)
         return header
     }
 
@@ -60,7 +60,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "labelCell")!
         let rowIndex = indexPath.row
         
-        cell.textLabel?.text = sections[indexPath.section].movies[rowIndex] + "\(rowIndex)"
+        cell.textLabel?.text = sections[indexPath.section].rows[rowIndex] + "\(rowIndex)"
         return cell
     }
 }
@@ -71,7 +71,7 @@ extension ViewController: ExpandableHeaderViewDelegate {
         sections[section].expanded = !sections[section].expanded
         
         tableView.beginUpdates()
-        for i in 0 ..< sections[section].movies.count {
+        for i in 0 ..< sections[section].rows.count {
             tableView.reloadRows(at: [IndexPath(row: i, section: section)], with: .automatic)
         }
         tableView.endUpdates()
